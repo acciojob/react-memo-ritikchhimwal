@@ -16,11 +16,14 @@ const ReactMemo = () => {
     <div>
       <h1>React.memo</h1>
       <input
+        data-testid="skill-input"
         type="text"
         value={skill}
         onChange={(e) => setSkill(e.target.value)}
       />
-      <button onClick={addSkill}>Add Skill</button>
+      <button data-testid="add-skill-btn" onClick={addSkill}>
+        Add Skill
+      </button>
       <TaskList skills={skills} />
     </div>
   );
