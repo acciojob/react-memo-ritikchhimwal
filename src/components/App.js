@@ -1,36 +1,48 @@
-import React, { useState, useMemo } from "react";
-import UseMemo from "./UseMemo";
-import ReactMemo from "./ReactMemo";
+import React, { useMemo, useState } from "react";
+import Skill from "./skills";
 
-const App = () => {
-  const [todos, setTodos] = useState(["New todo"]);
+function App() {
+  const [text, setText] = useState("");
   const [count, setCount] = useState(0);
+  const calculation = useMemo(() => {
+    return expensiveCalculation(count);
+  }, []);
 
-  const addTodo = () => {
-    setTodos([...todos, "New todo"]);
-  };
+  const [skills, setSkills] = useState([]);
+  const [newSkill, setNewSkill] = useState("");
 
-  const increment = () => {
-    setCount(count + 1);
+  function expensiveCalculation(num) {
+    for (let i = 0; i < 1000000000; i++) {
+      num += 1;
+    }
+    return num;
+  }
+
+  const handleAddSkills = () => {
+    setSkills([...skills, newSkill]);
   };
 
   return (
-    <div>
-      <h1>React.useMemo</h1>
-      <h2>My todos</h2>
-      <button data-testid="add-todo-btn" onClick={addTodo}>
-        Add Todo
-      </button>
-      <p>Count: {count}</p>
-      <button data-testid="increment-btn" onClick={increment}>
-        +
-      </button>
-      <UseMemo todos={todos} />
-
+    <>
+      <h1>My todos</h1>
+      <p>{text}</p>
+      <button onClick={() => setText("New Todo")}>Add Todo</button>
       <hr />
-      <ReactMemo />
-    </div>
+
+      <h1>Count: {count}</h1>
+      <button onClick={() => setCount(count + 1)}>+</button>
+
+      <h1>Expensive Calculation</h1>
+      <p>{calculation}</p>
+      <hr />
+
+      <h1>React.memo</h1>
+      <input onInput={(e) => setNewSkill(e.target.value)} />
+      <button onClick={handleAddSkills}>Add Skill</button>
+
+      <div>{<Skill allSkills={skills} />}</div>
+    </>
   );
-};
+}
 
 export default App;
